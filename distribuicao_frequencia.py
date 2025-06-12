@@ -20,7 +20,7 @@ def analisar_dados_estatisticos(dados_brutos, nome_do_conjunto):
     x_max = rol[-1]
     print("\n4. Valor Máximo e Mínimo:")
     print(f"  X_min = {x_min}")
-    print(f"  X_max = {x_max}")
+    print(f"  X_max = {x_max}")         
 
     # 4. Amplitude Total (AT)
     at = x_max - x_min
