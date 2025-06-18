@@ -35,5 +35,4 @@ desvio_padrao = np.std(notas)
 desvios_abs_em_relacao_mediana_individuais = np.abs(notas - mediana)
 
 
-
   
