@@ -6,23 +6,23 @@ from scipy.stats import trim_mean
 def get_medias(df_dados_brutos):
     #medias simples:
     media_populacao = df_dados_brutos['Populacao'].mean()
-    media_homicidios = df_dados_brutos['Taxa homicicios'].mean()
+    media_homicidios = df_dados_brutos['Taxa homicidios'].mean()
     #medias aparadas:
     proporcao_corte = 0.1 #corte de 10% de cada ponta
     media_aparada_populacao = trim_mean(df_dados_brutos['Populacao'],
     proportiontocut=proporcao_corte)
-    media_aparada_homicidios = trim_mean(df_dados_brutos['Taxa homicicios'],
+    media_aparada_homicidios = trim_mean(df_dados_brutos['Taxa homicidios'],
     proportiontocut=proporcao_corte)
     #mediana:
     mediana_populacao = df_dados_brutos['Populacao'].median()
-    mediana_homicidios = df_dados_brutos['Taxa homicicios'].median()
+    mediana_homicidios = df_dados_brutos['Taxa homicidios'].median()
     # media ponderada = soma(valor x peso) / soma(peso)
     # onde valor é a taxa_homicidio e o peso é populacao
     # calcular a média ponderada de homicídios onde o peso de cada cidade é sua população
-    media_ponderada = np.average(df_dados_brutos['Taxa homicicios'], weights=df_dados_brutos['Populacao'])
+    media_ponderada = np.average(df_dados_brutos['Taxa homicidios'], weights=df_dados_brutos['Populacao'])
     df_medias = pd.DataFrame({
         'Populacao': [media_populacao, media_aparada_populacao, mediana_populacao, np.nan],
-        'Taxa homicicios': [media_homicidios, media_aparada_homicidios, mediana_homicidios, media_ponderada]
+        'Taxa homicidios': [media_homicidios, media_aparada_homicidios, mediana_homicidios, media_ponderada]
     }, index=['Média','Média Aparada', 'Mediana', 'Media Ponderada'])
     return df_medias
 
@@ -101,6 +101,30 @@ def estimativas_variabilidade(dados_brutos, media):
     # df_percentis.index = novos_indices
     df_percentis.index = [f'{p  *100}%' for p in decimais]
     print(df_percentis.transpose())
+    print("\n")
+    
+    # Quartis
+    quartis = [0.25, 0.5, 0.75]
+    df_quartis = pd.DataFrame(dados_brutos.quantile(quartis))
+    df_quartis.index = ['Q1', 'Q2', 'Q3']
+    print(df_quartis.transpose())
+    print("\n")
+    
+    #amplitude
+    amplitude = dados_brutos.max() - dados_brutos.min()
+    amplitude_alt = dados_brutos.iloc[-1] - dados_brutos.iloc[0]
+    
+    #amplitude interquartil
+    amplitude_interquartil = df_quartis.max() - df_quartis.min()
+    amplitude_interquartil_alt = dados_brutos.quantile(0.75) - dados_brutos.quantile(0.25)
+    #mediana
+    mediana = dados_brutos.median
+    # dataframe
+    df_amplitudes = pd.DataFrame({
+        'Amplitude (max - min)' : amplitude,
+        'Amplitude interquartil (Q3 - Q1)' : amplitude_interquartil,
+        'Mediana (Q2)': mediana
+    })
 
-
+#imprimir dados
 estimativas_variabilidade(df_dados_brutos['Taxa homicidios'], np.mean(df_dados_brutos['Taxa homicidios']))
