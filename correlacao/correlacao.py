@@ -29,7 +29,7 @@ print(df_etf.head())
 etfs_correlacionados = df_etf.corr()
 print(etfs_correlacionados.head())
 
-fig, (telecomax, etfax) = plt.subplots(1, 2, figsize = (10,5))
+fig, (telecomax, etfax) = plt.subplots(1, 2, figsize = (10,5              ))
 telecomax = sns.heatmap(telecom_ativos.corr(), vmin = -1, vmax = 1, cmap = sns.diverging_palette(20, 220, as_cmap = True), ax=telecomax)
 etfax = sns.heatmap(df_etf.corr(), vmin = -1, vmax= 1, cmap=sns.diverging_palette(20, 220, as_cmap = True), ax=etfax)
 
